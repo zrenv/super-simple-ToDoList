@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="masukan">
+        <label for="input">Kegiatan : </label>
+        <input type="text" name="input" id="input">
+        <input type="submit" value="Tambah">
+    </form>
+    <h1>ToDoList</h1>
+    <form action="" id="search">
+        <label for="cari">search : </label>
+        <input type="text" name="cari" id="cari">
+        <input type="submit" value="Cari">
+    </form>
+    <section id="a">
+        <ol type="1">
+
+        </ol>
+    </section>
+</body>
+<script>
+    let data =[];
+
+    function hapusdataawal(){
+        const sectol = document.querySelector('section#a ol ');
+        while(sectol.firstChild){
+            sectol.removeChild(sectol.firstChild);
+        }
+    }
+    function tambahdata(todo ,index){
+        const libaru = document.createElement('li');
+        const sectol = document.querySelector('section#a ol')
+        sectol.appendChild(libaru);
+        libaru.textContent = todo;
+
+        const buttonbaru = document.createElement('input');
+        buttonbaru.value = "selesai";
+        buttonbaru.type = 'button';
+        libaru.appendChild(buttonbaru);
+        buttonbaru.onclick= function(){
+            hapusdata(index);
+        };
+    }
+    function caridata(index){
+        function kesamaan(nilaisearch){
+            return nilaisearch == document.forms['search']['cari'].value;
+        }
+
+        let datacari = data.find(kesamaan);
+
+        const libaru = document.createElement('li');
+        const sectol = document.querySelector('section#a ol');
+        sectol.appendChild(libaru);
+        libaru.textContent = datacari;
+
+        const buttonbaru = document.createElement('input');
+        buttonbaru.value = "selesai";
+        buttonbaru.type = 'button';
+        libaru.appendChild(buttonbaru);
+        buttonbaru.onclick= function(){
+            hapusdata(index);
+        };
+    }
+
+    function menampilkanData(){
+        hapusdataawal();
+        for(let i = 0 ; i<data.length ; i++){ 
+            const todo = data[i];
+            tambahdata(todo,i );
+        }
+    }
+
+    document.forms['masukan'].onsubmit = function(value){
+        value.preventDefault();
+
+        const input = document.forms['masukan']['input'].value;
+        data.push(input);
+        menampilkanData();
+
+        document.forms['masukan'].reset();
+    }
+    document.forms['search'].onsubmit = function(value){
+        value.preventDefault();
+        hapusdataawal();
+        caridata();
+
+        document.forms['search'].reset();
+
+    }
+
+    function hapusdata(index){
+        data.splice(index,1);
+        menampilkanData();
+    }
+</script>
+</html>
